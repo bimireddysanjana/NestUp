@@ -1,7 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-
 # Function to draw a box
 def draw_box(ax, x, y, z, dx, dy, dz, color):
     vertices = [
@@ -20,15 +19,11 @@ def draw_box(ax, x, y, z, dx, dy, dz, color):
     ]
 
     ax.add_collection3d(Poly3DCollection(vertices, alpha=0.3, facecolor=color))
-
-
 # Read CSV
 df = pd.read_csv("internship assignment.csv")
-
 # Clean mm values → convert to int
 def clean(val):
     return int(str(val).replace("mm", ""))
-
 df["LenX"] = df["LenX"].apply(clean)
 df["LenY"] = df["LenY"].apply(clean)
 df["LenZ"] = df["LenZ"].apply(clean)
@@ -39,28 +34,23 @@ df["Z"] = df["Z"].apply(clean)
 # Create plot
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-
 # Loop through rows
 for _, row in df.iterrows():
     level = row["Level"]
-
     if level == 0:
-        color = 'blue'   # Wall
+        color = 'red'
     elif level == 1:
-        color = 'green'  # Cabinet
+        color = 'blue'
     else:
-        color = 'red'    # Parts
-
+        color = 'green'
     draw_box(
         ax,
         row["X"], row["Y"], row["Z"],
         row["LenX"], row["LenY"], row["LenZ"],
         color
     )
-
 # Labels
 ax.set_xlabel("X")
 ax.set_ylabel("Y")
 ax.set_zlabel("Z")
-
 plt.show()
